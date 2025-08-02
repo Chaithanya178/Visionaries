@@ -1,31 +1,31 @@
 <img width="3188" height="1202" alt="frame (3)" src="https://github.com/user-attachments/assets/517ad8e9-ad22-457d-9538-a9e62d137cd7" />
 
 
-# [Project Name] 🎯
+# [CHRONOS] 🎯
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name: [VISIONARIES]
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Team Lead: [Chaithanya Raghunath] - [College of Engineering, Attingal]
+- Member 2: [Anjana P Joshy] - [College of Engineering, Attingal]
+  
 
 ### Project Description
-[2-3 lines about what your project does]
+[This is a Time Travel Rejection Portal. It includes feature like application for entering future, year explorer, time traveller community, time travel quiz and chronomatch dating app]
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+[A Ticket to Future is not possible]
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+[we build a futuristic world that cannot enter due to some absurd reasons]
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
+- [HTML,CSS,JS]
 - [Frameworks used]
 - [Libraries used]
 - [Tools used]
