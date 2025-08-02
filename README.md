@@ -82,7 +82,7 @@ For Hardware:
 ### Project Demo
 # Video
 [Add your demo video link here]
-*Explain what the video demonstrates*
+[*Time travel rejection portal demonstration*](https://drive.google.com/file/d/18jo_mYz029FmmxVtBAg2_i-OtTB7w3Ow/view?usp=drive_link)
 
 # Additional Demos
 [Add any extra demo materials/links]
