@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Status</title>
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff5e62;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #e4e8ed);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .rejection-container {
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        .certificate {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border: 2px dashed var(--accent);
+        }
+        
+        .certificate::before, .certificate::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--accent);
+        }
+        
+        .certificate::before {
+            top: 15px;
+            left: 15px;
+            border-right: none;
+            border-bottom: none;
+        }
+        
+        .certificate::after {
+            bottom: 15px;
+            right: 15px;
+            border-left: none;
+            border-top: none;
+        }
+        
+        .certificate-title {
+            font-size: 2.2rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+        
+        .certificate-subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            color: #666;
+        }
+        
+        .certificate-reason {
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin: 25px 0;
+            font-style: italic;
+            padding: 15px;
+            background: rgba(255, 94, 98, 0.1);
+            border-radius: 10px;
+            display: inline-block;
+        }
+        
+        .certificate-seal {
+            width: 100px;
+            height: 100px;
+            margin: 25px auto;
+            background: radial-gradient(circle, rgba(255,94,98,0.2) 0%, rgba(255,94,98,0) 70%);
+            border: 2px dashed var(--accent);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
+        
+        .minigame {
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .minigame-title {
+            color: var(--primary);
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+        }
+        
+        .minigame-description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .minigame-container {
+            height: 150px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+            margin: 20px auto;
+            background: #f9f9f9;
+            max-width: 500px;
+        }
+        
+        .minigame-character {
+            position: absolute;
+            bottom: 10px;
+            left: 50px;
+            width: 30px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 5px;
+            transition: bottom 0.3s ease;
+        }
+        
+        .minigame-obstacle {
+            position: absolute;
+            bottom: 10px;
+            right: -30px;
+            width: 25px;
+            height: 35px;
+            background: var(--accent);
+            border-radius: 5px;
+        }
+        
+        .minigame-controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .minigame-btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            min-width: 120px;
+        }
+        
+        .minigame-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .minigame-score {
+            margin-top: 15px;
+            color: var(--primary);
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        
+        .try-again-btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none;
+            padding: 12px 25px;
+            color: white;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 0 auto;
+            font-size: 1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+            display: block;
+            max-width: 250px;
+        }
+        
+        .try-again-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(106, 17, 203, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            .certificate {
+                padding: 25px;
+            }
+            
+            .certificate-title {
+                font-size: 1.8rem;
+            }
+            
+            .minigame-container {
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body class="rejection-page">
+    <div class="rejection-container">
+        <div class="certificate">
+            <div class="certificate-title">Certificate of Rejection</div>
+            <div class="certificate-subtitle">This certifies that your application for time travel has been</div>
+            <div class="certificate-reason" id="rejection-reason">DENIED DUE TO TEMPORAL CONFLICTS</div>
+            <div>as determined by the Chronos Review System</div>
+            <div class="certificate-seal">SEAL OF<br>REJECTION</div>
+        </div>
+        
+        <div class="minigame">
+            <h2 class="minigame-title">TIME JUMP MINIGAME</h2>
+            <p class="minigame-description">Navigate through temporal obstacles to earn a reconsideration appeal!</p>
+            
+            <div class="minigame-container" id="minigame-container">
+                <div class="minigame-character" id="minigame-character"></div>
+                <div class="minigame-obstacle" id="minigame-obstacle"></div>
+            </div>
+            
+            <div class="minigame-controls">
+                <button class="minigame-btn" id="jump-btn">JUMP (Space)</button>
+                <button class="minigame-btn" id="start-btn">START</button>
+            </div>
+            
+            <div class="minigame-score">Score: <span id="minigame-score">0</span></div>
+        </div>
+        
+        <button class="try-again-btn" onclick="window.location.href='application.html'">TRY AGAIN</button>
+    </div>
+
+    <script>
+        // Random rejection reasons
+        const rejectionReasons = [
+            "DENIED DUE TO TEMPORAL CONFLICTS",
+            "REJECTED: POTENTIAL TIME PARADOX DETECTED",
+            "DENIED: YOUR FUTURE SELF ALREADY OBJECTED",
+            "REJECTED: NOT INTERESTING ENOUGH FOR TIME TRAVEL",
+            "DENIED: YOUR APPLICATION WAS LOST IN TIME",
+            "REJECTED: TIME POLICE ARE ALREADY WATCHING YOU",
+            "DENIED: YOU WOULD PET A DINOSAUR AND WE CAN'T HAVE THAT"
+        ];
+        
+        // Set random rejection reason
+        document.getElementById('rejection-reason').textContent = 
+            rejectionReasons[Math.floor(Math.random() * rejectionReasons.length)];
+        
+        // Minigame variables
+        let gameRunning = false;
+        let score = 0;
+        let obstacleInterval;
+        let gameSpeed = 5;
+        const character = document.getElementById('minigame-character');
+        const obstacle = document.getElementById('minigame-obstacle');
+        const container = document.getElementById('minigame-container');
+        const jumpBtn = document.getElementById('jump-btn');
+        const startBtn = document.getElementById('start-btn');
+        const scoreDisplay = document.getElementById('minigame-score');
+        
+        // Initialize game
+        function initGame() {
+            character.style.bottom = '10px';
+            obstacle.style.right = '-30px';
+            score = 0;
+            scoreDisplay.textContent = score;
+            gameSpeed = 5;
+        }
+        
+        // Start game function
+        function startGame() {
+            if (gameRunning) return;
+            
+            initGame();
+            gameRunning = true;
+            startBtn.textContent = 'RESTART';
+            
+            obstacleInterval = setInterval(moveObstacle, 20);
+            document.addEventListener('keydown', handleKeyDown);
+        }
+        
+        // Move obstacle function
+        function moveObstacle() {
+            const obstacleRight = parseInt(obstacle.style.right || '-30');
+            const containerWidth = container.offsetWidth;
+            
+            if (obstacleRight > containerWidth) {
+                // Passed obstacle - increase score and speed
+                score++;
+                scoreDisplay.textContent = score;
+                gameSpeed = Math.min(5 + Math.floor(score / 3), 15);
+                
+                // Reset obstacle with random height
+                obstacle.style.right = '-30px';
+                const randomHeight = 20 + Math.floor(Math.random() * 30);
+                obstacle.style.height = `${randomHeight}px`;
+                
+                // Check for win condition
+                if (score >= 10) {
+                    winGame();
+                }
+            } else {
+                // Move obstacle
+                obstacle.style.right = `${obstacleRight + gameSpeed}px`;
+                checkCollision();
+            }
+        }
+        
+        // Check for collisions
+        function checkCollision() {
+            const characterRect = character.getBoundingClientRect();
+            const obstacleRect = obstacle.getBoundingClientRect();
+            
+            if (
+                characterRect.right > obstacleRect.left &&
+                characterRect.left < obstacleRect.right &&
+                characterRect.bottom > obstacleRect.top
+            ) {
+                endGame();
+            }
+        }
+        
+        // Jump function
+        function jump() {
+            if (!gameRunning || character.classList.contains('jumping')) return;
+            
+            character.classList.add('jumping');
+            character.style.bottom = '60px';
+            
+            setTimeout(() => {
+                character.style.bottom = '10px';
+                setTimeout(() => {
+                    character.classList.remove('jumping');
+                }, 300);
+            }, 500);
+        }
+        
+        // Handle keyboard input
+        function handleKeyDown(e) {
+            if (e.code === 'Space') {
+                e.preventDefault();
+                jump();
+            }
+        }
+        
+        // End game function
+        function endGame() {
+            clearInterval(obstacleInterval);
+            gameRunning = false;
+            document.removeEventListener('keydown', handleKeyDown);
+            alert(`Game over! Your score: ${score}. Try again to reach 10!`);
+        }
+        
+        // Win game function
+        function winGame() {
+            clearInterval(obstacleInterval);
+            gameRunning = false;
+            document.removeEventListener('keydown', handleKeyDown);
+            alert(`Congratulations! You've earned a reconsideration appeal! (Just kidding, the system never reconsiders.)`);
+        }
+        
+        // Event listeners
+        startBtn.addEventListener('click', startGame);
+        jumpBtn.addEventListener('click', jump);
+        
+        // Initialize game state
+        initGame();
+    </script>
+</body>
+</html>

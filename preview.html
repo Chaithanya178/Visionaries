@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Preview Terminal</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .terminal-container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #00ffff;
+            border-radius: 15px;
+            padding: 30px;
+            color: white;
+            font-family: 'Courier New', monospace;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+        
+        .terminal-header {
+            color: #00ffff;
+            text-align: center;
+            border-bottom: 1px dashed #00ffff;
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+        
+        .terminal-screen {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ffff;
+            padding: 20px;
+            height: 400px;
+            overflow-y: auto;
+            margin-bottom: 30px;
+            position: relative;
+            border-radius: 8px;
+        }
+        
+        .terminal-text {
+            color: #00ff00;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+        
+        .terminal-prompt {
+            color: #00ffff;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+        
+        .terminal-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #00ffff;
+            color: white;
+            font-family: 'Courier New', monospace;
+            flex-grow: 1;
+            padding: 8px;
+            margin-left: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .terminal-input:focus {
+            outline: none;
+            border-bottom-color: #ff00ff;
+        }
+        
+        .future-mirror {
+            width: 250px;
+            height: 250px;
+            border: 3px solid #00ffff;
+            border-radius: 50%;
+            margin: 30px auto;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #00ffff;
+            font-size: 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+        }
+        
+        .future-mirror::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(0,255,255,0.3) 0%, rgba(0,0,0,0) 70%);
+            animation: pulse 3s infinite;
+            z-index: 1;
+        }
+        
+        .future-mirror-content {
+            position: relative;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            width: 90%;
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .predict-btn {
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            border: none;
+            padding: 15px 40px;
+            color: black;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            font-size: 1.3rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .predict-btn:hover {
+            box-shadow: 0 0 30px #ff00ff;
+            transform: translateY(-5px);
+        }
+        
+        .predict-btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent 45%,
+                rgba(255, 255, 255, 0.3) 50%,
+                transparent 55%
+            );
+            animation: shine 3s infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .predict-btn:hover::after {
+            opacity: 1;
+        }
+        
+        .terminal-glitch {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/glitch.png');
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .version-selector {
+            margin: 30px 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .version-btn {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            padding: 8px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .version-btn:hover {
+            background: rgba(0, 255, 255, 0.3);
+        }
+        
+        .version-btn.active {
+            background: rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+        
+        @keyframes shine {
+            0% { transform: translate(-30%, -30%) rotate(30deg); }
+            100% { transform: translate(30%, 30%) rotate(30deg); }
+        }
+        
+        @keyframes terminalFlicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+            20%, 22%, 24%, 55% { opacity: 0.8; }
+        }
+    </style>
+</head>
+<body class="terminal-page">
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    
+    <div class="terminal-container">
+        <h1 class="terminal-header">FUTURE PREVIEW TERMINAL v3.1.4</h1>
+        
+        <div class="version-selector">
+            <button class="version-btn active" onclick="selectVersion('optimistic')">Optimistic</button>
+            <button class="version-btn" onclick="selectVersion('realistic')">Realistic</button>
+            <button class="version-btn" onclick="selectVersion('dystopian')">Dystopian</button>
+            <button class="version-btn" onclick="selectVersion('banana')">Banana</button>
+        </div>
+        
+        <div class="terminal-screen">
+            <div class="terminal-text" id="terminal-output">
+                > INITIALIZING FUTURE PREVIEW SEQUENCE...<br>
+                > CONNECTING TO TEMPORAL DATABASE...<br>
+                > WARNING: Future predictions are 73.6% inaccurate<br>
+                > Enter a question about your future below<br><br>
+            </div>
+            <div class="terminal-prompt">
+                > <input type="text" class="terminal-input" id="future-question" 
+                       placeholder="Ask about your future..." onkeypress="handleQuestion(event)">
+            </div>
+            <div class="terminal-glitch" id="terminal-glitch"></div>
+        </div>
+        
+        <div class="future-mirror">
+            <div class="future-mirror-content">
+                FUTURE SELF<br>MIRROR<br><span id="mirror-age">??</span>
+            </div>
+        </div>
+        
+        <button class="predict-btn" onclick="predictTimeline()">PREDICT MY TIMELINE</button>
+    </div>
+
+    <script>
+        let currentVersion = 'optimistic';
+        const futureEvents = {
+            optimistic: [
+                "You invent reversible toast (but no one cares)",
+                "You become mildly famous for 15 minutes in 2047",
+                "Your clone runs for political office",
+                "You discover the meaning of life (but forget to write it down)",
+                "You finally get that thing you wanted",
+                "Robots become our friends and learn to bake cookies"
+            ],
+            realistic: [
+                "You mostly just keep doing what you're doing",
+                "Traffic gets worse",
+                "They reboot your favorite show (it's not as good)",
+                "You have the same arguments but with holograms",
+                "Everything costs more",
+                "You finally clean out that closet (in 2042)"
+            ],
+            dystopian: [
+                "Robot uprising begins (it's mostly paperwork)",
+                "The last tree dies (it was a jerk anyway)",
+                "Money is replaced by social media points",
+                "You're assigned a corporate sponsor at birth",
+                "All food is replaced by nutrient paste (flavor: original)",
+                "The final final world war begins (sponsored by Coca-Cola)"
+            ],
+            banana: [
+                "Bananas achieve sentience",
+                "Banana civilization rises",
+                "You are tried for crimes against banana-kind",
+                "The Great Peeling begins",
+                "Banana overlords declare Mondays illegal",
+                "Humanity lives as pets to our banana masters"
+            ]
+        };
+        
+        function selectVersion(version) {
+            currentVersion = version;
+            document.querySelectorAll('.version-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Add version change to terminal
+            const output = document.getElementById('terminal-output');
+            output.innerHTML += `> FUTURE VERSION SET TO: ${version.toUpperCase()}<br>`;
+            output.scrollTop = output.scrollHeight;
+            
+            // Play sound
+            const audio = new Audio('sounds/select.mp3');
+            audio.volume = 0.2;
+            audio.play();
+        }
+        
+        function handleQuestion(e) {
+            if (e.key === 'Enter') {
+                const question = document.getElementById('future-question').value;
+                if (!question) return;
+                
+                const output = document.getElementById('terminal-output');
+                output.innerHTML += `> QUESTION: ${question}<br>`;
+                
+                // Simulate processing
+                output.innerHTML += '> ANALYZING TEMPORAL PROBABILITIES...<br>';
+                document.getElementById('terminal-glitch').style.opacity = '0.5';
+                
+                // Typewriter effect
+                const answerDelay = 1500 + Math.random() * 1000;
+                
+                setTimeout(() => {
+                    document.getElementById('terminal-glitch').style.opacity = '0';
+                    
+                    // Get random answer
+                    const answers = [
+                        "Signs point to yes, but also no",
+                        "The time streams are unclear (try again after coffee)",
+                        "42",
+                        "Your future self says 'Don't ask that'",
+                        "The Time Council has classified this information",
+                        "According to calculations: maybe",
+                        "The answer will surprise you (but not in a good way)"
+                    ];
+                    
+                    const randomAnswer = answers[Math.floor(Math.random() * answers.length)];
+                    
+                    // Type out answer
+                    typeText(output, `> ANSWER: ${randomAnswer}<br><br>`, 30);
+                    
+                    document.getElementById('future-question').value = '';
+                }, answerDelay);
+            }
+        }
+        
+        function typeText(element, text, speed) {
+            let i = 0;
+            const typing = setInterval(() => {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    element.scrollTop = element.scrollHeight;
+                    i++;
+                } else {
+                    clearInterval(typing);
+                }
+            }, speed);
+        }
+        
+        function predictTimeline() {
+            const output = document.getElementById('terminal-output');
+            const mirrorAge = document.getElementById('mirror-age');
+            
+            // Animate button
+            const btn = document.querySelector('.predict-btn');
+            btn.textContent = 'PROCESSING...';
+            btn.style.background = 'linear-gradient(45deg, #00ffff, #ff00ff)';
+            
+            // Clear previous predictions
+            output.innerHTML += '> INITIATING TIMELINE PREDICTION...<br>';
+            output.innerHTML += '> WARNING: This may cause temporal dizziness<br>';
+            
+            document.getElementById('terminal-glitch').style.opacity = '0.7';
+            
+            setTimeout(() => {
+                document.getElementById('terminal-glitch').style.opacity = '0';
+                
+                output.innerHTML += '> YOUR FUTURE TIMELINE:<br>';
+                
+                // Show 3 random future events
+                const events = futureEvents[currentVersion];
+                for (let i = 0; i < 3; i++) {
+                    const randomIndex = Math.floor(Math.random() * events.length);
+                    const year = 2025 + Math.floor(Math.random() * 50);
+                    typeText(output, `- ${year}: ${events[randomIndex]}<br>`, 30);
+                }
+                
+                output.innerHTML += '<br>';
+                output.scrollTop = output.scrollHeight;
+                
+                // Update future mirror
+                const age = 25 + Math.floor(Math.random() * 50);
+                mirrorAge.textContent = `AGE: ${age}`;
+                
+                // Reset button
+                btn.textContent = 'PREDICT MY TIMELINE';
+                btn.style.background = 'linear-gradient(45deg, #ff00ff, #00ffff)';
+                
+                // Glitch effect
+                setTimeout(() => {
+                    document.getElementById('terminal-glitch').style.opacity = '0.3';
+                    setTimeout(() => {
+                        document.getElementById('terminal-glitch').style.opacity = '0';
+                    }, 200);
+                }, 100);
+                
+            }, 3000);
+        }
+        
+        // Random glitch effects
+        setInterval(() => {
+            if (Math.random() < 0.1) {
+                const glitch = document.getElementById('terminal-glitch');
+                glitch.style.opacity = '0.3';
+                setTimeout(() => {
+                    glitch.style.opacity = '0';
+                }, 100);
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

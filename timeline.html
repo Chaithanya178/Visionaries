@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Year Explorer</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff5e62;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #e4e8ed);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .explorer-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .explorer-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .explorer-header h1 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .year-selector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .year-input {
+            width: 120px;
+            padding: 12px 15px;
+            text-align: center;
+            font-size: 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            color: var(--dark);
+        }
+        
+        .year-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .explore-btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none;
+            padding: 12px 25px;
+            color: white;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+        }
+        
+        .explore-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(106, 17, 203, 0.4);
+        }
+        
+        .news-feed {
+            margin-top: 30px;
+        }
+        
+        .news-item {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .news-year {
+            color: var(--primary);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .news-headline {
+            font-size: 1.3rem;
+            margin: 10px 0;
+            color: var(--dark);
+        }
+        
+        .news-desc {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .decade-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .decade-btn {
+            background: rgba(106, 17, 203, 0.1);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .decade-btn:hover {
+            background: rgba(106, 17, 203, 0.2);
+        }
+    </style>
+</head>
+<body class="timeline-page">
+    <div class="explorer-container">
+        <div class="explorer-header">
+            <h1>Year Explorer</h1>
+            <p>Select any year to see what news and events await you</p>
+        </div>
+        
+        <div class="decade-buttons">
+            <button class="decade-btn" onclick="selectDecade('2020')">2020s</button>
+            <button class="decade-btn" onclick="selectDecade('2030')">2030s</button>
+            <button class="decade-btn" onclick="selectDecade('2040')">2040s</button>
+            <button class="decade-btn" onclick="selectDecade('2050')">2050s</button>
+            <button class="decade-btn" onclick="selectDecade('2060')">2060s</button>
+        </div>
+        
+        <div class="year-selector">
+            <input type="number" class="year-input" id="year-input" min="1900" max="2100" value="2025">
+            <button class="explore-btn" onclick="exploreYear()">EXPLORE</button>
+        </div>
+        
+        <div class="news-feed" id="news-feed">
+            <!-- News items will be added here -->
+        </div>
+    </div>
+     <a href="./home.html">back</a>
+    <script>
+        const futureEvents = {
+            "2025": [
+                {
+                    headline: "Quantum Computers Become Mainstream",
+                    description: "After years of development, quantum computers are now available for consumer purchase. Prices start at $1.2 million."
+                },
+                {
+                    headline: "First Human-Machine Hybrid Olympics",
+                    description: "The new category allows athletes with neural and biomechanical enhancements to compete."
+                }
+            ],
+            "2030": [
+                {
+                    headline: "Flying Cars Approved for Civilian Use",
+                    description: "After extensive testing, the FAA has approved the first flying car models for consumer use. License requires 100 hours of simulator training."
+                },
+                {
+                    headline: "Mars Colony Reaches 100 Residents",
+                    description: "The first permanent Mars settlement celebrates its 100th resident with a low-gravity party."
+                }
+            ],
+            "2040": [
+                {
+                    headline: "AI Wins Nobel Prize in Literature",
+                    description: "An artificial intelligence system named 'Muse' becomes the first non-human to win a Nobel Prize."
+                },
+                {
+                    headline: "Memory Editing Becomes Possible",
+                    description: "Scientists develop a technique to selectively edit human memories, raising ethical concerns worldwide."
+                }
+            ],
+            "2050": [
+                {
+                    headline: "First Human Born in Space",
+                    description: "A baby is born on the International Space Station, marking a new era for humanity as a spacefaring species."
+                },
+                {
+                    headline: "World Population Begins to Decline",
+                    description: "For the first time in modern history, global population numbers start decreasing due to lower birth rates."
+                }
+            ]
+        };
+        
+        function exploreYear() {
+            const year = document.getElementById('year-input').value;
+            const newsFeed = document.getElementById('news-feed');
+            newsFeed.innerHTML = '';
+            
+            if (futureEvents[year]) {
+                futureEvents[year].forEach(event => {
+                    const newsItem = document.createElement('div');
+                    newsItem.className = 'news-item';
+                    newsItem.innerHTML = `
+                        <div class="news-year">${year}</div>
+                        <div class="news-headline">${event.headline}</div>
+                        <div class="news-desc">${event.description}</div>
+                    `;
+                    newsFeed.appendChild(newsItem);
+                });
+            } else {
+                // Generate random future news for years not in our dataset
+                const randomEvents = generateRandomEvents(year);
+                randomEvents.forEach(event => {
+                    const newsItem = document.createElement('div');
+                    newsItem.className = 'news-item';
+                    newsItem.innerHTML = `
+                        <div class="news-year">${year}</div>
+                        <div class="news-headline">${event.headline}</div>
+                        <div class="news-desc">${event.description}</div>
+                    `;
+                    newsFeed.appendChild(newsItem);
+                });
+            }
+        }
+        
+        function selectDecade(decade) {
+            document.getElementById('year-input').value = decade;
+            exploreYear();
+        }
+        
+        function generateRandomEvents(year) {
+            const subjects = ["AI", "robots", "quantum computers", "space travel", "climate change", "virtual reality"];
+            const verbs = ["revolutionize", "transform", "disrupt", "challenge", "redefine", "eliminate"];
+            const objects = ["the workplace", "human relationships", "global economy", "education", "entertainment", "politics"];
+            
+            const headlines = [
+                `${subjects[Math.floor(Math.random()*subjects.length)]} ${verbs[Math.floor(Math.random()*verbs.length)]} ${objects[Math.floor(Math.random()*objects.length)]}`,
+                `Scientists achieve breakthrough in ${subjects[Math.floor(Math.random()*subjects.length)]}`,
+                `New law regulates ${subjects[Math.floor(Math.random()*subjects.length)]} usage`
+            ];
+            
+            const descriptions = [
+                `In ${year}, this development changed everything we knew about ${objects[Math.floor(Math.random()*objects.length)]}.`,
+                `After years of research, this innovation finally became available to the public.`,
+                `Experts predict this will have major consequences for future generations.`
+            ];
+            
+            return [
+                {
+                    headline: headlines[0].charAt(0).toUpperCase() + headlines[0].slice(1),
+                    description: descriptions[0]
+                },
+                {
+                    headline: headlines[1].charAt(0).toUpperCase() + headlines[1].slice(1),
+                    description: descriptions[1]
+                }
+            ];
+        }
+        
+        // Initialize with current year
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentYear = new Date().getFullYear();
+            document.getElementById('year-input').value = currentYear + 2;
+            exploreYear();
+        });
+    </script>
+</body>
+</html>

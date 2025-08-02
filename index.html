@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chronos Portal</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff5e62;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--light), #e0e0e0);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .login-container {
+            width: 90%;
+            max-width: 400px;
+            padding: 2.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+        
+        .logo {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .tagline {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+        
+        .time-input {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .time-input input {
+            width: 60px;
+            padding: 12px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            color: var(--dark);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .time-input input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.2);
+        }
+        
+        .time-input span {
+            color: var(--primary);
+            font-size: 1.5rem;
+            line-height: 2.5rem;
+            opacity: 0.7;
+        }
+        
+        .login-btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none;
+            padding: 15px 40px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(106, 17, 203, 0.4);
+        }
+        
+        .disclaimer {
+            margin-top: 2rem;
+            font-size: 0.75rem;
+            color: #999;
+            line-height: 1.4;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container floating">
+        <div class="logo">CHRONOS</div>
+        <div class="tagline">Time Travel Application Portal</div>
+        
+        <div class="time-input">
+            <input type="text" id="hour" maxlength="2" placeholder="HH" pattern="[0-9]*">
+            <span>:</span>
+            <input type="text" id="minute" maxlength="2" placeholder="MM" pattern="[0-9]*">
+            <span>:</span>
+            <input type="text" id="second" maxlength="2" placeholder="SS" pattern="[0-9]*">
+        </div>
+        
+        <button class="login-btn" onclick="attemptLogin()">BEGIN TIME JOURNEY</button>
+        
+        <div class="disclaimer">
+            By proceeding, you agree to the Chronos Terms of Service. 
+            Time travel is subject to availability and temporal regulations.
+        </div>
+    </div>
+
+    <script>
+        function attemptLogin() {
+            const hour = document.getElementById('hour').value;
+            const minute = document.getElementById('minute').value;
+            const second = document.getElementById('second').value;
+            
+            if (hour || minute || second) {
+                document.querySelector('.login-container').style.transform = 'scale(1.1)';
+                document.querySelector('.login-container').style.opacity = '0';
+                
+                setTimeout(() => {
+                    window.location.href = "home.html";
+                }, 500);
+            } else {
+                document.querySelector('.login-container').style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    document.querySelector('.login-container').style.animation = '';
+                }, 500);
+            }
+        }
+
+        document.getElementById('hour').focus();
+        
+        document.querySelectorAll('.time-input input').forEach(input => {
+            input.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+                
+                if (this.value.length >= 2) {
+                    const next = this.nextElementSibling?.nextElementSibling;
+                    if (next && next.tagName === 'INPUT') {
+                        next.focus();
+                    }
+                }
+            });
+            
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && this.value.length === 0) {
+                    const prev = this.previousElementSibling?.previousElementSibling;
+                    if (prev && prev.tagName === 'INPUT') {
+                        prev.focus();
+                    }
+                }
+            });
+        });
+
+        const now = new Date();
+        document.getElementById('hour').placeholder = now.getHours().toString().padStart(2, '0');
+        document.getElementById('minute').placeholder = now.getMinutes().toString().padStart(2, '0');
+        document.getElementById('second').placeholder = now.getSeconds().toString().padStart(2, '0');
+    </script>
+</body>
+</html>

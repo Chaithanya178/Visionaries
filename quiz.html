@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporal Preparation Quiz</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        .quiz-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #00ffff;
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+        }
+        
+        .quiz-header {
+            color: #00ffff;
+            border-bottom: 1px dashed #00ffff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .quiz-question {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #444;
+        }
+        
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+        
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ffff;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            background: rgba(0, 255, 255, 0.2);
+        }
+        
+        .option.selected {
+            background: rgba(0, 255, 255, 0.4);
+            box-shadow: 0 0 10px #00ffff;
+        }
+        
+        .submit-quiz {
+            background: linear-gradient(45deg, #00ffff, #0088ff);
+            border: none;
+            padding: 12px 25px;
+            color: black;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        
+        .submit-quiz:hover {
+            box-shadow: 0 0 20px #00ffff;
+        }
+        
+        .quiz-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ffff;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .result-title {
+            color: #00ffff;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ffff;
+            border-radius: 10px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ffff, #0088ff);
+            width: 0%;
+            transition: width 1s;
+        }
+    </style>
+</head>
+<body class="quiz-page">
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    
+    <div class="quiz-container">
+        <h1 class="quiz-header">TEMPORAL PREPARATION QUIZ</h1>
+        <p>Test your readiness for time travel. Score below 70% may result in application rejection.</p>
+        
+        <div class="quiz-question">
+            <div class="question-text">1. Would you pet a dinosaur?</div>
+            <div class="quiz-options">
+                <div class="option" onclick="selectOption(this, 1, 'a')">A) Absolutely, how often do you get that chance?</div>
+                <div class="option" onclick="selectOption(this, 1, 'b')">B) Only if it's a herbivore</div>
+                <div class="option" onclick="selectOption(this, 1, 'c')">C) No, I value my limbs</div>
+                <div class="option" onclick="selectOption(this, 1, 'd')">D) I would try to domesticate it</div>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <div class="question-text">2. You meet your past self. What do you do?</div>
+            <div class="quiz-options">
+                <div class="option" onclick="selectOption(this, 2, 'a')">A) High five yourself for being awesome</div>
+                <div class="option" onclick="selectOption(this, 2, 'b')">B) Warn yourself about future mistakes</div>
+                <div class="option" onclick="selectOption(this, 2, 'c')">C) Avoid interaction to prevent paradoxes</div>
+                <div class="option" onclick="selectOption(this, 2, 'd')">D) Convince yourself to invest in Bitcoin</div>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <div class="question-text">3. The Time Council rejects your application. You:</div>
+            <div class="quiz-options">
+                <div class="option" onclick="selectOption(this, 3, 'a')">A) Submit an appeal before they reject you</div>
+                <div class="option" onclick="selectOption(this, 3, 'b')">B) Build your own time machine</div>
+                <div class="option" onclick="selectOption(this, 3, 'c')">C) Accept their wisdom (while plotting revenge)</div>
+                <div class="option" onclick="selectOption(this, 3, 'd')">D) Go back in time to fix your application</div>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <div class="question-text">4. You're stuck in medieval times. First thing you do?</div>
+            <div class="quiz-options">
+                <div class="option" onclick="selectOption(this, 4, 'a')">A) Invent modern medicine</div>
+                <div class="option" onclick="selectOption(this, 4, 'b')">B) Blend in and avoid witch trials</div>
+                <div class="option" onclick="selectOption(this, 4, 'c')">C) Become a king/queen</div>
+                <div class="option" onclick="selectOption(this, 4, 'd')">D) Complain about the lack of WiFi</div>
+            </div>
+        </div>
+        
+        <div class="quiz-question">
+            <div class="question-text">5. You discover you're a time lizard. You:</div>
+            <div class="quiz-options">
+                <div class="option" onclick="selectOption(this, 5, 'a')">A) Deny it vehemently</div>
+                <div class="option" onclick="selectOption(this, 5, 'b')">B) Embrace your scaly destiny</div>
+                <div class="option" onclick="selectOption(this, 5, 'c')">C) Check if you can breathe fire</div>
+                <div class="option" onclick="selectOption(this, 5, 'd')">D) What's a time lizard?</div>
+            </div>
+        </div>
+        
+        <button class="submit-quiz" onclick="submitQuiz()">SUBMIT TEMPORAL QUIZ</button>
+        
+        <div class="quiz-result" id="quiz-result">
+            <div class="result-title">YOUR TEMPORAL READINESS SCORE:</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div id="result-text"></div>
+        </div>
+    </div>
+     <a href="./home.html">back</a>
+    <script>
+        const answers = {};
+        const correctAnswers = {
+            1: 'c',  // No, I value my limbs
+            2: 'c',  // Avoid interaction to prevent paradoxes
+            3: 'a',  // Submit an appeal before they reject you
+            4: 'b',  // Blend in and avoid witch trials
+            5: 'd'   // What's a time lizard?
+        };
+        
+        function selectOption(element, question, option) {
+            // Remove selected class from all options in this question
+            const questionDiv = element.parentElement.parentElement;
+            questionDiv.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked option
+            element.classList.add('selected');
+            answers[question] = option;
+        }
+        
+        function submitQuiz() {
+            // Check if all questions are answered
+            const totalQuestions = Object.keys(correctAnswers).length;
+            if (Object.keys(answers).length < totalQuestions) {
+                alert('Please answer all questions before submitting.');
+                return;
+            }
+            
+            // Calculate score
+            let score = 0;
+            for (const [question, answer] of Object.entries(answers)) {
+                if (answer === correctAnswers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Display result
+            const resultDiv = document.getElementById('quiz-result');
+            const progressFill = document.getElementById('progress-fill');
+            const resultText = document.getElementById('result-text');
+            
+            progressFill.style.width = `${percentage}%`;
+            
+            let feedback = '';
+            if (percentage >= 80) {
+                feedback = `Excellent! With ${percentage}% temporal readiness, you're theoretically prepared for time travel. (Theoretical because let's be honest, no one is truly prepared.)`;
+            } else if (percentage >= 60) {
+                feedback = `With ${percentage}%, you might survive time travel if you're lucky. The Time Council might still reject you for "lack of temporal gravitas."`;
+            } else {
+                feedback = `${percentage}%? You'd probably accidentally erase yourself from history. The Time Council will definitely reject you.`;
+            }
+            
+            resultText.innerHTML = feedback;
+            resultDiv.style.display = 'block';
+            
+            // Scroll to result
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+            
+            // Show additional funny feedback based on specific answers
+            if (answers[1] === 'a') {
+                resultText.innerHTML += `<br><br>Note: Your desire to pet dinosaurs has been noted. This is why we can't have nice timelines.`;
+            }
+            
+            if (answers[5] === 'b') {
+                resultText.innerHTML += `<br><br>Your embrace of time lizard identity is concerning. Please report to the nearest Time Council office for... debriefing.`;
+            }
+        }
+    </script>
+</body>
+</html>

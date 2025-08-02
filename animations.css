@@ -1,0 +1,58 @@
+/* Login page animations */
+.login-page .stars {
+    animation: moveStars 100s linear infinite;
+}
+
+@keyframes moveStars {
+    from { background-position: 0 0; }
+    to { background-position: -1000px 0; }
+}
+
+/* Dashboard animations */
+.dashboard-page .panel {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.dashboard-page .panel:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 255, 255, 0.3);
+}
+
+/* Terminal animations */
+.terminal-page .terminal-screen {
+    animation: terminalFlicker 5s infinite;
+}
+
+@keyframes terminalFlicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+    20%, 22%, 24%, 55% { opacity: 0.8; }
+}
+
+/* Timeline wheel animations */
+.timeline-page .wheel-section {
+    transition: transform 0.5s;
+}
+
+.timeline-page .wheel-section:hover {
+    transform: scale(1.05);
+}
+
+/* Dating profile animations */
+.dating-page .profile-card {
+    transition: transform 0.3s;
+}
+
+.dating-page .profile-card:hover {
+    transform: scale(1.02);
+}
+
+/* Rejection certificate animations */
+.rejection-page .certificate {
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}

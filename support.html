@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temporal Support Group</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        .support-container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #00ffff;
+            border-radius: 10px;
+            padding: 20px;
+            color: white;
+        }
+        
+        .support-header {
+            color: #00ffff;
+            border-bottom: 1px dashed #00ffff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .chat-container {
+            height: 400px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ffff;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .chat-message {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #444;
+        }
+        
+        .message-user {
+            font-weight: bold;
+            color: #ff00ff;
+        }
+        
+        .message-time {
+            color: #aaaaaa;
+            font-size: 0.8rem;
+            margin-left: 10px;
+        }
+        
+        .message-text {
+            margin-top: 5px;
+        }
+        
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ffff;
+            color: white;
+            border-radius: 5px;
+        }
+        
+        .chat-input button {
+            background: linear-gradient(45deg, #00ffff, #0088ff);
+            border: none;
+            padding: 0 20px;
+            color: black;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        .user-status {
+            margin-top: 20px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #00ffff;
+            border-radius: 5px;
+        }
+        
+        .status-title {
+            color: #00ffff;
+            margin-bottom: 10px;
+        }
+        
+        .status-user {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .online { background: #00ff00; }
+        .offline { background: #ff0000; }
+        .time-traveling { background: #00ffff; animation: pulse 1s infinite; }
+    </style>
+</head>
+<body class="support-page">
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+    
+    <div class="support-container">
+        <h1 class="support-header">TEMPORAL SUPPORT GROUP</h1>
+        <p>"We're all stuck in time together"</p>
+        
+        <div class="chat-container" id="chat-container">
+            <div class="chat-message">
+                <div><span class="message-user">TimeWarden42</span><span class="message-time">2023-11-15 14:30:00</span></div>
+                <div class="message-text">Welcome to the Temporal Support Group. Please remember to include your current time period in your messages.</div>
+            </div>
+            <div class="chat-message">
+                <div><span class="message-user">LostIn54</span><span class="message-time">1954-07-04 08:15:00</span></div>
+                <div class="message-text">Still stuck in 1954. Send help. The music is great but the racism is exhausting.</div>
+            </div>
+            <div class="chat-message">
+                <div><span class="message-user">FutureShock</span><span class="message-time">2042-03-18 22:45:00</span></div>
+                <div class="message-text">Anyone else from post-robot-uprising? How are you coping with our new toaster overlords?</div>
+            </div>
+            <div class="chat-message">
+                <div><span class="message-user">TemporalTea</span><span class="message-time">1789-04-15 16:20:00</span></div>
+                <div class="message-text">Pro tip: Don't try to explain smartphones to Benjamin Franklin. He won't stop asking questions.</div>
+            </div>
+            <div class="chat-message">
+                <div><span class="message-user">ClockBlocker</span><span class="message-time">2023-11-15 14:32:00</span></div>
+                <div class="message-text">My application got rejected again. Time Council said I "lack temporal gravitas." What does that even mean?</div>
+            </div>
+            <div class="chat-message">
+                <div><span class="message-user">DinoLover</span><span class="message-time">65,000,000 BCE-07-01 12:00:00</span></div>
+                <div class="message-text">The meteor is coming! I told them but no one listens! Also, petting a T-Rex is NOT worth it.</div>
+            </div>
+        </div>
+        
+        <div class="chat-input">
+            <input type="text" id="message-input" placeholder="Type your message... (include your time period)" onkeypress="sendMessage(event)">
+            <button onclick="sendMessage()">SEND</button>
+        </div>
+        
+        <div class="user-status">
+            <div class="status-title">CURRENTLY ACTIVE TIME TRAVELERS:</div>
+            <div class="status-user">
+                <div class="status-indicator online"></div>
+                <div>TimeWarden42 (2023)</div>
+            </div>
+            <div class="status-user">
+                <div class="status-indicator time-traveling"></div>
+                <div>LostIn54 (1954)</div>
+            </div>
+            <div class="status-user">
+                <div class="status-indicator online"></div>
+                <div>FutureShock (2042)</div>
+            </div>
+            <div class="status-user">
+                <div class="status-indicator time-traveling"></div>
+                <div>TemporalTea (1789)</div>
+            </div>
+            <div class="status-user">
+                <div class="status-indicator online"></div>
+                <div>ClockBlocker (2023)</div>
+            </div>
+            <div class="status-user">
+                <div class="status-indicator offline"></div>
+                <div>DinoLover (65,000,000 BCE) - Last seen: 65,000,000 BCE-07-01</div>
+            </div>
+        </div>
+    </div>
+    <a href="./home.html">back</a>
+    <script>
+        function sendMessage(e) {
+            if (e && e.key !== 'Enter') return;
+            if (!e && !document.getElementById('message-input').value) return;
+            
+            const input = document.getElementById('message-input');
+            const message = input.value;
+            
+            if (!message) return;
+            
+            const now = new Date();
+            const timeString = now.toISOString().replace('T', ' ').substring(0, 19);
+            
+            const chatContainer = document.getElementById('chat-container');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message';
+            messageDiv.innerHTML = `
+                <div><span class="message-user">You</span><span class="message-time">${timeString}</span></div>
+                <div class="message-text">${message}</div>
+            `;
+            
+            chatContainer.appendChild(messageDiv);
+            input.value = '';
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // Simulate random response after delay
+            setTimeout(() => {
+                const responses = [
+                    "Have you tried turning your time machine off and on again?",
+                    "The Time Council is watching... always watching.",
+                    "That happened to me in 2147. Or was it 2146? Time gets fuzzy.",
+                    "I'd help but I'm currently stuck in a time loop. Send help.",
+                    "Have you checked the temporal FAQ?",
+                    "Just wait until you see what happens next Tuesday."
+                ];
+                
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                const users = ['TimeWarden42', 'FutureShock', 'TemporalTea', 'ClockBlocker'];
+                const randomUser = users[Math.floor(Math.random() * users.length)];
+                const randomTime = new Date(now.getTime() - Math.random() * 10000000000).toISOString().replace('T', ' ').substring(0, 19);
+                
+                const responseDiv = document.createElement('div');
+                responseDiv.className = 'chat-message';
+                responseDiv.innerHTML = `
+                    <div><span class="message-user">${randomUser}</span><span class="message-time">${randomTime}</span></div>
+                    <div class="message-text">${randomResponse}</div>
+                `;
+                
+                chatContainer.appendChild(responseDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

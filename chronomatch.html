@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChronoMatch Dating</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff5e62;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #e4e8ed);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .dating-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .dating-header {
+            color: var(--primary);
+            text-align: center;
+            border-bottom: 2px dashed rgba(106, 17, 203, 0.3);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid rgba(106, 17, 203, 0.1);
+            margin: 0 auto 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .profile-name {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        
+        .profile-era {
+            color: var(--secondary);
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+        
+        .profile-bio {
+            margin-bottom: 20px;
+            text-align: center;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .match-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .match-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .like-btn {
+            background: linear-gradient(45deg, #4CAF50, #8BC34A);
+            color: white;
+        }
+        
+        .dislike-btn {
+            background: linear-gradient(45deg, #f44336, #ff9800);
+            color: white;
+        }
+        
+        .like-btn:hover, .dislike-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .match-result {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(106, 17, 203, 0.1);
+            border-radius: 15px;
+            display: none;
+        }
+        
+        .match-title {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .time-period-selector {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .period-btn {
+            background: rgba(106, 17, 203, 0.1);
+            border: none;
+            padding: 8px 15px;
+            margin: 0 5px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--primary);
+            font-weight: 500;
+        }
+        
+        .period-btn:hover {
+            background: rgba(106, 17, 203, 0.2);
+        }
+        
+        .period-btn.active {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 4px 10px rgba(106, 17, 203, 0.2);
+        }
+    </style>
+</head>
+<body class="dating-page">
+    <div class="dating-container">
+        <h1 class="dating-header">CHRONOMATCH DATING</h1>
+        <p>Find love across time and space (paradoxes not included)</p>
+        
+        <div class="time-period-selector">
+            <span>Filter by era:</span>
+            <button class="period-btn active" onclick="selectPeriod('all')">All</button>
+            <button class="period-btn" onclick="selectPeriod('past')">Past</button>
+            <button class="period-btn" onclick="selectPeriod('present')">Present</button>
+            <button class="period-btn" onclick="selectPeriod('future')">Future</button>
+        </div>
+        
+        <div class="profile-card" id="profile-card">
+            <img src="images/profile1.jpg" class="profile-image" id="profile-image">
+            <div class="profile-name" id="profile-name">Loading...</div>
+            <div class="profile-era" id="profile-era">Time period unknown</div>
+            <div class="profile-bio" id="profile-bio">
+                Connecting to temporal dating database...
+            </div>
+            <div class="match-actions">
+                <button class="match-btn dislike-btn" onclick="dislikeProfile()">PASS</button>
+                <button class="match-btn like-btn" onclick="likeProfile()">LIKE</button>
+            </div>
+        </div>
+        
+        <div class="match-result" id="match-result">
+            <div class="match-title">IT'S A TEMPORAL MATCH!</div>
+            <div id="match-text">You and <span id="match-name">[NAME]</span> have liked each other across time!</div>
+            <button onclick="continueMatching()" style="margin-top: 15px;" class="match-btn like-btn">CONTINUE MATCHING</button>
+        </div>
+    </div>
+    <a href="./home.html">back</a>
+    <script>
+        const profiles = [
+            {
+                name: "Lady Eleanor",
+                era: "Medieval England, 1347",
+                bio: "Noblewoman seeking someone to discuss the plague with. Must have own castle. No peasants.",
+                image: "images/profile1.jpg",
+                period: "past"
+            },
+            {
+                name: "Zyx-427",
+                era: "Andromeda Galaxy, 3057",
+                bio: "Three-armed alien looking for meaningful connection. Willing to time travel for the right person. No humans who freak out about tentacles.",
+                image: "images/profile2.jpg",
+                period: "future"
+            },
+            {
+                name: "Vincent Van Gogh",
+                era: "France, 1888",
+                bio: "Artist looking for someone who appreciates my work. Ear optional.",
+                image: "images/profile3.jpg",
+                period: "past"
+            },
+            {
+                name: "Neo-Tokyo Citizen #4271",
+                era: "Tokyo, 2142",
+                bio: "Cybernetic enhancements included. Looking for someone to share my limited human experiences with before the robot uprising completes.",
+                image: "images/profile4.jpg",
+                period: "future"
+            },
+            {
+                name: "You From The Future",
+                era: "Your timeline, 2045",
+                bio: "Surprise! It's you, but older and hopefully wiser. This is either really narcissistic or really lonely. Let's not think about it too hard.",
+                image: "images/profile5.jpg",
+                period: "future"
+            },
+            {
+                name: "Cleopatra",
+                era: "Ancient Egypt, 30 BCE",
+                bio: "Queen looking for someone to rule beside me. Must be comfortable with snakes, intrigue, and being historically inaccurate in movies about me.",
+                image: "images/profile6.jpg",
+                period: "past"
+            }
+        ];
+        
+        let currentProfile = null;
+        let likedProfiles = [];
+        let currentPeriod = 'all';
+        
+        function selectPeriod(period) {
+            currentPeriod = period;
+            document.querySelectorAll('.period-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            showRandomProfile();
+        }
+        
+        function showRandomProfile() {
+            let filteredProfiles = profiles;
+            
+            if (currentPeriod !== 'all') {
+                filteredProfiles = profiles.filter(profile => profile.period === currentPeriod);
+            }
+            
+            let availableProfiles = filteredProfiles.filter(profile => 
+                !currentProfile || profile.name !== currentProfile.name
+            );
+            
+            if (availableProfiles.length === 0) {
+                availableProfiles = filteredProfiles;
+            }
+            
+            const randomIndex = Math.floor(Math.random() * availableProfiles.length);
+            currentProfile = availableProfiles[randomIndex];
+            
+            document.getElementById('profile-name').textContent = currentProfile.name;
+            document.getElementById('profile-era').textContent = currentProfile.era;
+            document.getElementById('profile-bio').textContent = currentProfile.bio;
+            document.getElementById('profile-image').src = currentProfile.image;
+            
+            document.getElementById('match-result').style.display = 'none';
+        }
+        
+        function likeProfile() {
+            likedProfiles.push(currentProfile);
+            
+            if (Math.random() < 0.3 && likedProfiles.length > 1) {
+                showMatch();
+            } else {
+                showRandomProfile();
+            }
+        }
+        
+        function dislikeProfile() {
+            showRandomProfile();
+        }
+        
+        function showMatch() {
+            const matchIndex = Math.floor(Math.random() * likedProfiles.length);
+            const matchedProfile = likedProfiles[matchIndex];
+            
+            document.getElementById('match-name').textContent = matchedProfile.name;
+            document.getElementById('match-text').textContent = 
+                `You and ${matchedProfile.name} have liked each other across time!`;
+            
+            document.getElementById('match-result').style.display = 'block';
+        }
+        
+        function continueMatching() {
+            showRandomProfile();
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            showRandomProfile();
+        });
+    </script>
+</body>
+</html>

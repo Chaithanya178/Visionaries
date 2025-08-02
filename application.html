@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Travel Application</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff5e62;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa, #e4e8ed);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .application-container {
+            max-width: 600px;
+            margin: 30px auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .application-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .application-header h1 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .application-header p {
+            color: #666;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid #ddd;
+            color: var(--dark);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus, 
+        .form-group select:focus, 
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+        }
+        
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .date-time-selector {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .date-time-selector input {
+            flex: 1;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none;
+            padding: 15px 30px;
+            color: white;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(106, 17, 203, 0.3);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(106, 17, 203, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .warning {
+            color: var(--accent);
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            background: rgba(255, 94, 98, 0.1);
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="application-page">
+    <div class="application-container">
+        <div class="application-header">
+            <h1>Time Travel Application</h1>
+            <p>Complete this simple form to begin your journey through time</p>
+        </div>
+        
+        <div class="form-group">
+            <label for="full-name">Full Name</label>
+            <input type="text" id="full-name" placeholder="Your name">
+        </div>
+        
+        <div class="form-group">
+            <label for="destination-year">Destination Date</label>
+            <div class="date-time-selector">
+                <input type="date" id="destination-date">
+                <input type="time" id="destination-time">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="reason">Purpose of Travel</label>
+            <textarea id="reason" placeholder="Why do you want to travel through time?"></textarea>
+        </div>
+        
+        <div class="warning" id="warning">
+            Please complete all fields before submitting your application.
+        </div>
+        
+        <button class="submit-btn" onclick="submitApplication()">SUBMIT APPLICATION</button>
+    </div>
+     <a href="./home.html">back</a>
+    <script>
+        function submitApplication() {
+            const name = document.getElementById('full-name').value;
+            const reason = document.getElementById('reason').value;
+            const date = document.getElementById('destination-date').value;
+            const time = document.getElementById('destination-time').value;
+            
+            if (!name || !reason || !date || !time) {
+                document.getElementById('warning').style.display = 'block';
+                document.querySelector('.application-container').style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    document.querySelector('.application-container').style.animation = '';
+                }, 500);
+                return;
+            }
+            
+            // Animate submission
+            document.querySelector('.submit-btn').textContent = 'PROCESSING...';
+            
+            // Random delay to simulate processing
+            setTimeout(() => {
+                window.location.href = "rejection.html";
+            }, 2000);
+        }
+        
+        // Set default date to tomorrow
+        document.addEventListener('DOMContentLoaded', function() {
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const dateStr = tomorrow.toISOString().split('T')[0];
+            document.getElementById('destination-date').value = dateStr;
+        });
+    </script>
+</body>
+</html>
